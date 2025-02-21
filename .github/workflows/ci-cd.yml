@@ -1,0 +1,76 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests with coverage
+      run: npm test
+
+    - name: Check test coverage threshold
+      run: |
+        COVERAGE=$(npm test | grep -o 'All files[^%]*%' | grep -o '[0-9.]*')
+        if (( $(echo "$COVERAGE < 90" | bc -l) )); then
+          echo "Test coverage ($COVERAGE%) is below threshold (90%)"
+          exit 1
+        fi
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint
+
+  # # Note: This job is a template and needs to be configured with your AWS credentials
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: [test, lint]
+  #   if: github.ref == 'refs/heads/main'
+    
+  #   steps:
+  #   - uses: actions/checkout@v3
+    
+  #   - name: Configure AWS credentials
+  #     uses: aws-actions/configure-aws-credentials@v1
+  #     with:
+  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       aws-region: ${{ secrets.AWS_REGION }}
+    
+    # Add your deployment steps here
+    # Example:
+    # - name: Deploy to EC2
+    #   run: |
+    #     # Add your deployment script here
+    #     # This could be using SSH to connect to EC2 and pull/restart the application
+    #     # Or using AWS CLI to update an ECS service
+    #     echo "Deployment steps go here"
