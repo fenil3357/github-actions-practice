@@ -33,7 +33,7 @@ jobs:
 
     # Share the node_modules by uploading it as an artifact
     - name: Upload node_modules
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: node_modules
         path: node_modules/
@@ -50,7 +50,7 @@ jobs:
         node-version: '18'
 
     - name: Download node_modules
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with: 
         name: node_modules
         path: node_modules/
@@ -82,7 +82,7 @@ jobs:
         node-version: '18'
 
     - name: Download node_modules
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: node_modules
         path: node_modules/
