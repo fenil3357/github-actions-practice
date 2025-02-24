@@ -9,9 +9,16 @@ app.use(morgan('dev'));
 
 app.use('/api/tasks', taskRoutes);
 
+app.get('/error', () => {
+  console.log('Simulated error!');
+  throw new Error('Some error occurred!!!');
+});
+
 // Error handling middleware
-app.use((err, _req, res) => {
-  console.error(err.stack);
+app.use((err, req, res, next) => {
+  if(req) console.log();
+  if(next) console.log();
+  console.log('Error:', err?.message);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
