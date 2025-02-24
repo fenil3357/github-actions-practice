@@ -5,12 +5,12 @@ const taskRoutes = require('./routes/tasks');
 const app = express();
 
 app.use(express.json());
-app.use(morgan('dev'));
+app.use(morgan('combined'));
 
 app.use('/api/tasks', taskRoutes);
 
 app.get('/error', () => {
-  console.log('Simulated error!');
+  console.log('Simulating an error!');
   throw new Error('Some error occurred!!!');
 });
 

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start src/server.js --name server -o ./logs/output.log -e ./logs/error.log",
+    "start": "pm2 start src/server.js --name server -o ./logs/output.log -e ./logs/error.log -i max",
     "dev": "nodemon src/server.js",
     "test": "jest --coverage",
     "lint": "eslint ."
