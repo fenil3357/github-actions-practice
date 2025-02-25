@@ -70,7 +70,7 @@ jobs:
 
       - name: Copy image to target server and deploy
         run: |
-          docker run -d -rm \
+          docker run -d --rm \
             -p 3000:3000 \
             -v /logs:/app/logs \
             --name node-server \
