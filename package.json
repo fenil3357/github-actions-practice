@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "pm2 start src/server.js --name server -o ./logs/output.log -e ./logs/error.log -i max",
+    "start:docker": "pm2-runtime start src/server.js --name server --output ./logs/output.log --error ./logs/error.log -i max",
     "dev": "nodemon src/server.js",
     "test": "jest --coverage",
     "lint": "eslint ."
